@@ -33,10 +33,7 @@ export default class JokeList extends Component {
     }
 
     render() {
-        return (
-            <StyledJokeList>
-                <h1>wow</h1>
-            </StyledJokeList>
-        );
+        const jokes = this.state.jokes.map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} />);
+        return <StyledJokeList>{jokes}</StyledJokeList>;
     }
 }
