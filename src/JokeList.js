@@ -40,7 +40,6 @@ const SidebarImg = styled.img`
     border-radius: 50%;
     ${BoxShadow};
 `;
-
 const NewJokesBtn = styled.button`
     font-size: 2rem;
     height: 6rem;
@@ -64,7 +63,6 @@ const NewJokesBtn = styled.button`
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
     }
 `;
-
 const Jokes = styled.div`
     background: white;
     height: 90%;
@@ -119,7 +117,7 @@ export default class JokeList extends Component {
     }
 
     render() {
-        const jokes = this.state.jokes.map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} />);
+        const jokes = this.state.jokes.map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} />);
         return (
             <StyledJokeList>
                 <Sidebar>
