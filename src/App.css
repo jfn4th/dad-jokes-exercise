@@ -4,4 +4,5 @@
     justify-content: center;
     height: 100vh;
     font-family: "Rubik", sans-serif;
+    background: linear-gradient(135deg, #b3e5fc 50%, #f06292 50%);
 }
