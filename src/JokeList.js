@@ -3,7 +3,29 @@ import Joke from './Joke';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const StyledJokeList = styled.div``;
+const StyledJokeList = styled.div`
+    /* margin: 0 auto;d */
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    height: 80vh;
+`;
+const Sidebar = styled.div`
+    display: flex;
+    align-items: center;
+    background: #8a65cc;
+    min-height: 100%;
+    min-width: 30%;
+`;
+
+const Jokes = styled.div`
+    background: white;
+    height: 90%;
+    flex-grow: 3;
+`;
 
 export default class JokeList extends Component {
     constructor(props) {
@@ -34,6 +56,13 @@ export default class JokeList extends Component {
 
     render() {
         const jokes = this.state.jokes.map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} />);
-        return <StyledJokeList>{jokes}</StyledJokeList>;
+        return (
+            <StyledJokeList>
+                <Sidebar>
+                    <h1>Dad Jokes</h1>
+                </Sidebar>
+                <Jokes>{jokes}</Jokes>
+            </StyledJokeList>
+        );
     }
 }

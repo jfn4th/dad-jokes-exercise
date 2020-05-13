@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
+const StyledJoke = styled.div`text-align: left;`;
 
 export default class Joke extends Component {
     render() {
         return (
-            <div>
-                <h1>{this.props.joke}</h1>
-            </div>
+            <StyledJoke>
+                <p>{this.props.joke}</p>
+            </StyledJoke>
         );
     }
 }
