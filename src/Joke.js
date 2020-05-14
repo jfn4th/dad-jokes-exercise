@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,17 +39,40 @@ const JokeSmiley = styled.div`
     border-radius: 50%;
     box-shadow: 0 10px 38px rgba(0, 0, 0, 0.2), 0 10px 12px rgba(0, 0, 0, 0.1);
 `;
-const UpArrow = styled(FontAwesomeIcon).attrs(() => ({ icon: faArrowUp }))``;
-const DownArrow = styled(FontAwesomeIcon).attrs(() => ({ icon: faArrowDown }))``;
+const arrowStyles = css`
+    color: #afbdc5;
+    font-size: 2rem;
+    margin: 1rem;
+`;
+const UpArrow = styled(FontAwesomeIcon).attrs((props) => ({ icon: faArrowUp }))`
+${arrowStyles}
+`;
+const DownArrow = styled(FontAwesomeIcon).attrs((props) => ({ icon: faArrowDown }))`
+${arrowStyles}
+`;
 
 export default class Joke extends Component {
+    constructor(props) {
+        super(props);
+        this.upVote = this.upVote.bind(this);
+        this.downVote = this.downVote.bind(this);
+    }
+
+    upVote(evt) {
+        this.props.assessVote(this.props.id, 1);
+    }
+
+    downVote(evt) {
+        this.props.assessVote(this.props.id, -1);
+    }
+
     render() {
         return (
             <StyledJoke>
                 <JokeButtons>
-                    <UpArrow />
+                    <UpArrow onClick={this.upVote} />
                     <JokeVotes>{this.props.votes}</JokeVotes>
-                    <DownArrow />
+                    <DownArrow onClick={this.downVote} />
                 </JokeButtons>
                 <JokeText>{this.props.joke}</JokeText>
                 <JokeSmiley>

@@ -3,7 +3,7 @@ import Joke from './Joke';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
 
-const BoxShadow = css`box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);`;
+const boxShadow = css`box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);`;
 
 const StyledJokeList = styled.div`
     height: 80%;
@@ -38,7 +38,7 @@ const SidebarImg = styled.img`
     width: 50%;
     border: 0.5rem solid #9575cd;
     border-radius: 50%;
-    ${BoxShadow};
+    ${boxShadow};
 `;
 const NewJokesBtn = styled.button`
     font-size: 2rem;
@@ -56,7 +56,7 @@ const NewJokesBtn = styled.button`
     outline: none;
     background: linear-gradient(135deg, #b3e5fc 50%, #f06292 50%);
     transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1);
-    ${BoxShadow};
+    ${boxShadow};
 
     &:hover {
         transform: translateY(-2px);
@@ -69,7 +69,7 @@ const Jokes = styled.div`
     align-self: center;
     width: 70%;
     overflow: auto;
-    ${BoxShadow};
+    ${boxShadow};
 `;
 
 export default class JokeList extends Component {
@@ -84,6 +84,7 @@ export default class JokeList extends Component {
             loading: false
         };
         this.getJokes = this.getJokes.bind(this);
+        this.assessVote = this.assessVote.bind(this);
     }
 
     componentDidMount() {
@@ -116,8 +117,20 @@ export default class JokeList extends Component {
         return jokes.some((joke) => joke.id === newJoke.id);
     }
 
+    assessVote(jokeId, vote) {
+        const votedJokes = this.state.jokes.map((joke) => {
+            if (joke.id === jokeId) {
+                return { ...joke, votes: joke.votes + vote };
+            }
+            return joke;
+        });
+        this.setState({ jokes: votedJokes });
+    }
+
     render() {
-        const jokes = this.state.jokes.map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} />);
+        const jokes = this.state.jokes.map((joke) => (
+            <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} assessVote={this.assessVote} />
+        ));
         return (
             <StyledJokeList>
                 <Sidebar>
