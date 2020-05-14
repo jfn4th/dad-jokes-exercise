@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const StyledJoke = styled.div`
     padding: 1rem;
@@ -37,15 +39,17 @@ const JokeSmiley = styled.div`
     border-radius: 50%;
     box-shadow: 0 10px 38px rgba(0, 0, 0, 0.2), 0 10px 12px rgba(0, 0, 0, 0.1);
 `;
+const UpArrow = styled(FontAwesomeIcon).attrs(() => ({ icon: faArrowUp }))``;
+const DownArrow = styled(FontAwesomeIcon).attrs(() => ({ icon: faArrowDown }))``;
 
 export default class Joke extends Component {
     render() {
         return (
             <StyledJoke>
                 <JokeButtons>
-                    <i>but</i>
+                    <UpArrow />
                     <JokeVotes>{this.props.votes}</JokeVotes>
-                    <i>but</i>
+                    <DownArrow />
                 </JokeButtons>
                 <JokeText>{this.props.joke}</JokeText>
                 <JokeSmiley>
