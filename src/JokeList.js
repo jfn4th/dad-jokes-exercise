@@ -137,7 +137,10 @@ export default class JokeList extends Component {
                     <SidebarTitle>
                         <span>Dad</span> Jokes
                     </SidebarTitle>
-                    <SidebarImg src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg' alt='' />
+                    <SidebarImg
+                        src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg'
+                        alt='Crying while laughing emoji'
+                    />
                     <NewJokesBtn>Fetch Jokes</NewJokesBtn>
                 </Sidebar>
                 <Jokes>{jokes}</Jokes>
