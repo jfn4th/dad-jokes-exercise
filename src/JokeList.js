@@ -81,14 +81,20 @@ export default class JokeList extends Component {
 
         this.state = {
             jokes: [],
-            loading: false
+            loading: false,
+            fetching: false
         };
         this.getJokes = this.getJokes.bind(this);
         this.assessVote = this.assessVote.bind(this);
+        this.fetchJokes = this.fetchJokes.bind(this);
     }
 
     componentDidMount() {
-        if (this.state.jokes.length === 0) this.getJokes();
+        if (this.state.jokes.length === 0) this.fetchJokes();
+    }
+
+    fetchJokes() {
+        this.setState({ fetching: true }, this.getJokes);
     }
 
     async getJokes() {
@@ -107,14 +113,14 @@ export default class JokeList extends Component {
                 } while (this.checkJoke(newJokes, newJoke));
                 newJokes.push(newJoke);
             }
-            this.setState((st) => ({ jokes: [ ...st.jokes, ...newJokes ] }));
+            this.setState((st) => ({ jokes: [ ...st.jokes, ...newJokes ], fetching: false }));
         } catch (e) {
             alert(e);
         }
     }
 
     checkJoke(jokes, newJoke) {
-        return jokes.some((joke) => joke.id === newJoke.id);
+        return jokes.some((joke) => joke.id === newJoke.id) || this.state.jokes.some((joke) => joke.id === newJoke.id);
     }
 
     assessVote(jokeId, vote) {
@@ -141,7 +147,9 @@ export default class JokeList extends Component {
                         src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg'
                         alt='Crying while laughing emoji'
                     />
-                    <NewJokesBtn>Fetch Jokes</NewJokesBtn>
+                    <NewJokesBtn onClick={this.fetchJokes} disabled={this.state.fetching}>
+                        Fetch Jokes
+                    </NewJokesBtn>
                 </Sidebar>
                 <Jokes>{jokes}</Jokes>
             </StyledJokeList>
