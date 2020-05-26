@@ -128,9 +128,9 @@ export default class JokeList extends Component {
     }
 
     render() {
-        const jokes = this.state.jokes.map((joke) => (
-            <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} assessVote={this.assessVote} />
-        ));
+        const jokes = this.state.jokes
+            .sort((a, b) => b.votes - a.votes)
+            .map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} assessVote={this.assessVote} />);
         return (
             <StyledJokeList>
                 <Sidebar>
