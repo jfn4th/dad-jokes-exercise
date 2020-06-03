@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Joke from './Joke';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLaugh } from '@fortawesome/free-solid-svg-icons';
 
 const boxShadow = css`box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);`;
 
@@ -72,6 +74,17 @@ const Jokes = styled.div`
     ${boxShadow};
 `;
 
+const Loader = styled.div`
+    color: white;
+    text-align: center;
+`;
+
+const LoaderTitle = styled(SidebarTitle)``;
+
+const Spinner = styled(FontAwesomeIcon).attrs((props) => ({ icon: faLaugh, size: '8x' }))`
+
+`;
+
 export default class JokeList extends Component {
     static defaultProps = {
         numJokesToGet: 10
@@ -81,8 +94,7 @@ export default class JokeList extends Component {
 
         this.state = {
             jokes: [],
-            loading: false,
-            fetching: false
+            loading: false
         };
         this.getJokes = this.getJokes.bind(this);
         this.assessVote = this.assessVote.bind(this);
@@ -90,11 +102,18 @@ export default class JokeList extends Component {
     }
 
     componentDidMount() {
-        if (this.state.jokes.length === 0) this.fetchJokes();
+        const storedJokes = JSON.parse(localStorage.getItem('jokes'));
+        if (storedJokes) {
+            this.setState({ jokes: storedJokes });
+        } else this.fetchJokes();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        localStorage.setItem('jokes', JSON.stringify(this.state.jokes));
     }
 
     fetchJokes() {
-        this.setState({ fetching: true }, this.getJokes);
+        this.setState({ loading: true }, this.getJokes);
     }
 
     async getJokes() {
@@ -113,7 +132,7 @@ export default class JokeList extends Component {
                 } while (this.checkJoke(newJokes, newJoke));
                 newJokes.push(newJoke);
             }
-            this.setState((st) => ({ jokes: [ ...st.jokes, ...newJokes ], fetching: false }));
+            this.setState((st) => ({ jokes: [ ...st.jokes, ...newJokes ], loading: false }));
         } catch (e) {
             alert(e);
         }
@@ -134,6 +153,14 @@ export default class JokeList extends Component {
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <Loader>
+                    <Spinner spin />
+                    <LoaderTitle>Loading...</LoaderTitle>
+                </Loader>
+            );
+        }
         const jokes = this.state.jokes
             .sort((a, b) => b.votes - a.votes)
             .map((joke) => <Joke key={joke.id} id={joke.id} joke={joke.joke} votes={joke.votes} assessVote={this.assessVote} />);
@@ -147,7 +174,7 @@ export default class JokeList extends Component {
                         src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg'
                         alt='Crying while laughing emoji'
                     />
-                    <NewJokesBtn onClick={this.fetchJokes} disabled={this.state.fetching}>
+                    <NewJokesBtn onClick={this.fetchJokes} disabled={this.state.loading}>
                         Fetch Jokes
                     </NewJokesBtn>
                 </Sidebar>
